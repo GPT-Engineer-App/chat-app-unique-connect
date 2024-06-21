@@ -13,11 +13,15 @@ const Index = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    console.log('Socket connection established');
+
     socket.on('updateUsers', (users) => {
+      console.log('Users updated:', users);
       setUsers(users);
     });
 
     socket.on('receiveMessage', (message) => {
+      console.log('Message received:', message);
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
@@ -29,6 +33,7 @@ const Index = () => {
 
   const handleLogin = () => {
     if (password === 'password') {
+      console.log('Login event emitted:', username);
       socket.emit('login', username);
       setLoggedIn(true);
     } else {
@@ -38,6 +43,7 @@ const Index = () => {
 
   const handleSendMessage = () => {
     const newMessage = { username, text: message };
+    console.log('SendMessage event emitted:', newMessage);
     socket.emit('sendMessage', newMessage);
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage('');
